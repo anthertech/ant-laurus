@@ -7,3 +7,5 @@ from frappe.tests.utils import FrappeTestCase
 
 class TestDailySyllabusUpdate(FrappeTestCase):
 	pass
+
+
