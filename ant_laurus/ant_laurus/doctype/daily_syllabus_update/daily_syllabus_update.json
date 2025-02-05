@@ -53,7 +53,7 @@
   },
   {
    "fieldname": "date_and_time",
-   "fieldtype": "Datetime",
+   "fieldtype": "Date",
    "label": "Date and Time"
   },
   {
@@ -75,7 +75,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-16 15:07:35.123629",
+ "modified": "2025-01-23 13:28:35.504152",
  "modified_by": "Administrator",
  "module": "Ant Laurus",
  "name": "Daily Syllabus Update",
