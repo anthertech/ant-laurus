@@ -249,4 +249,16 @@ fixtures = [
             ["module", "=", "Ant Laurus"]
         ]
     },
+    {
+        "dt": "Custom Field",
+        "filters": [
+            ["module", "=", "Ant Laurus"]
+        ]
+    },
+    {
+        "dt": "Client Script",
+        "filters": [
+            ["module", "=", "Ant Laurus"]
+        ]
+    }
 ]
