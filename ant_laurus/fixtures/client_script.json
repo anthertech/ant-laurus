@@ -1,0 +1,68 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Job Opening",
+  "enabled": 1,
+  "modified": "2025-02-26 17:42:52.756410",
+  "module": "Ant Laurus",
+  "name": "hide section break",
+  "script": "frappe.ui.form.on('Job Opening', {\n    custom_recruitment: function(frm) {\n        let recruitment = frm.doc.custom_recruitment ? frm.doc.custom_recruitment.trim() : \"\";\n\n        if (recruitment === 'Internal') {\n            frm.set_df_property('custom_hiring_organization', 'hidden', 1);\n            frm.set_df_property('section_break_nngy', 'hidden', 0);\n        } else if (recruitment === 'Placement') {\n            frm.set_df_property('custom_hiring_organization', 'hidden', 0);\n            frm.set_df_property('section_break_nngy', 'hidden', 1);\n        } else {\n            // If custom_recruitment is null, empty, or not selected, hide both fields\n            frm.set_df_property('custom_hiring_organization', 'hidden', 1);\n            frm.set_df_property('section_break_nngy', 'hidden', 1);\n        }\n    },\n\n    refresh: function(frm) {\n        frm.trigger('custom_recruitment'); // Ensure script runs when form loads\n    }\n});\n\n\n\nfrappe.ui.form.on('Job Opening', {\n    setup: function(frm) {\n        frm.set_query('custom_company_name', function() {\n            return {\n                filters: {\n                    customer_type: 'Placement'\n                }\n            };\n        });\n    }\n});\n\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Job Applicant",
+  "enabled": 1,
+  "modified": "2025-02-26 17:43:17.182364",
+  "module": "Ant Laurus",
+  "name": "Recruitment",
+  "script": "frappe.ui.form.on('Job Applicant', {\n    job_title: function(frm) {\n        if (frm.doc.job_title) {\n            frappe.call({\n                method: 'frappe.client.get_value',\n                args: {\n                    doctype: 'Job Opening',\n                    filters: { name: frm.doc.job_title },\n                    fieldname: 'custom_recruitment'\n                },\n                callback: function(r) {\n                    if (r.message && r.message.custom_recruitment) {\n                        frm.set_value('custom_recruitment', r.message.custom_recruitment);\n                        toggle_custom_student(frm, r.message.custom_recruitment);\n                    }\n                }\n            });\n        }\n    },\n\n    refresh: function(frm) {\n        if (frm.doc.job_title && !frm.doc.custom_recruitment) {\n            frappe.call({\n                method: 'frappe.client.get_value',\n                args: {\n                    doctype: 'Job Opening',\n                    filters: { name: frm.doc.job_title },\n                    fieldname: 'custom_recruitment'\n                },\n                callback: function(r) {\n                    if (r.message && r.message.custom_recruitment) {\n                        frm.set_value('custom_recruitment', r.message.custom_recruitment);\n                        toggle_custom_student(frm, r.message.custom_recruitment);\n                    }\n                }\n            });\n        } else {\n            toggle_custom_student(frm, frm.doc.custom_recruitment);\n        }\n    },\n\n    custom_recruitment: function(frm) {\n        toggle_custom_student(frm, frm.doc.custom_recruitment);\n    }\n});\n\n// Function to toggle visibility of 'custom_student_' field\nfunction toggle_custom_student(frm, recruitment_type) {\n    frm.toggle_display('custom_student_', recruitment_type !== 'Internal');\n        frm.toggle_display('custom_hiring_company', recruitment_type !== 'Internal');\n\n}\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Interview",
+  "enabled": 1,
+  "modified": "2025-02-26 17:43:29.173659",
+  "module": "Ant Laurus",
+  "name": "Interview Student name",
+  "script": "frappe.ui.form.on('Interview', {\n    onload: function(frm) {\n        fetch_student_name(frm);\n    },\n    refresh: function(frm) {\n        fetch_student_name(frm);\n    },\n    job_applicant: function(frm) {\n        fetch_student_name(frm);\n    }\n});\n\nfunction fetch_student_name(frm) {\n    if (frm.doc.job_applicant) {\n        frappe.call({\n            method: 'frappe.client.get_value',\n            args: {\n                doctype: 'Job Applicant',\n                filters: { email_id: frm.doc.job_applicant }, // Matching email\n                fieldname: 'custom_student_' // Fetching student name field\n            },\n            callback: function(r) {\n                if (r.message && r.message.custom_student_) {\n                    frm.set_value('custom_student_name', r.message.custom_student_);\n                }\n            }\n        });\n    }\n}\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Interview",
+  "enabled": 1,
+  "modified": "2025-02-26 17:43:06.516668",
+  "module": "Ant Laurus",
+  "name": "interview Recruitment",
+  "script": "frappe.ui.form.on('Interview', {\n    job_applicant: function(frm) {\n        if (frm.doc.job_applicant) {\n            frappe.call({\n                method: 'frappe.client.get_value',\n                args: {\n                    doctype: 'Job Applicant',\n                    filters: { name: frm.doc.job_applicant },\n                    fieldname: ['custom_recruitment', 'custom_student_']\n                },\n                callback: function(r) {\n                    if (r.message) {\n                        if (r.message.custom_recruitment) {\n                            frm.set_value('custom_recruitment', r.message.custom_recruitment);\n                            toggle_custom_student_name(frm, r.message.custom_recruitment);\n                        }\n                        if (r.message.custom_student_) {\n                            frm.set_value('custom_student_name', r.message.custom_student_);\n                        }\n                    }\n                }\n            });\n        }\n    },\n\n    refresh: function(frm) {\n        if (frm.doc.job_applicant) {\n            frappe.call({\n                method: 'frappe.client.get_value',\n                args: {\n                    doctype: 'Job Applicant',\n                    filters: { name: frm.doc.job_applicant },\n                    fieldname: ['custom_recruitment', 'custom_student_']\n                },\n                callback: function(r) {\n                    if (r.message) {\n                        if (r.message.custom_recruitment) {\n                            frm.set_value('custom_recruitment', r.message.custom_recruitment);\n                            toggle_custom_student_name(frm, r.message.custom_recruitment);\n                        }\n                        if (r.message.custom_student_) {\n                            frm.set_value('custom_student_name', r.message.custom_student_);\n                        }\n                    }\n                }\n            });\n        }\n    },\n\n    custom_recruitment: function(frm) {\n        toggle_custom_student_name(frm, frm.doc.custom_recruitment);\n    }\n});\n\n// Function to toggle visibility of 'custom_student_name' field\nfunction toggle_custom_student_name(frm, recruitment_type) {\n    frm.toggle_display('custom_student_name', recruitment_type !== 'Internal');\n}\n\nfrappe.ui.form.on('Interview', {\n    refresh: function(frm) {\n        // Call the function when the form loads\n        toggle_interview_details(frm);\n    },\n    custom_recruitment: function(frm) {\n        // Call the function when the custom_recruitment field changes\n        toggle_interview_details(frm);\n    }\n});\n\nfunction toggle_interview_details(frm) {\n    if (frm.doc.custom_recruitment === 'Placement') {\n        frm.set_df_property('interview_details', 'hidden', 1);\n    } else {\n        frm.set_df_property('interview_details', 'hidden', 0);\n    }\n}\n\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Job Applicant",
+  "enabled": 1,
+  "modified": "2025-02-26 17:42:59.996420",
+  "module": "Ant Laurus",
+  "name": "Custom Button for placement",
+  "script": "frappe.ui.form.on('Job Applicant', {\n    refresh: function(frm) {\n        frm.add_custom_button(__('Create Placement'), function() {\n            frappe.new_doc('Placements', {\n                student_name: frm.doc.custom_student_, // Copy student name\n                job_applicant_id: frm.doc.name, // Copy Job Applicant ID\n                placed_company: frm.doc.custom_hiring_company // Copy hiring company\n            });\n        }, __('Actions'));\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Customer",
+  "enabled": 1,
+  "modified": "2025-02-27 10:17:05.719869",
+  "module": "Ant Laurus",
+  "name": "customer type",
+  "script": "frappe.ui.form.on('Customer', {\n    refresh: function(frm) {\n        // Call the function on form refresh\n        toggle_defaults_tab(frm);\n    },\n    customer_type: function(frm) {\n        // Call the function when 'customer_type' changes\n        toggle_defaults_tab(frm);\n    }\n});\n\nfunction toggle_defaults_tab(frm) {\n    if (frm.doc.customer_type === 'Placement') {\n        frm.toggle_display('defaults_tab', false); // Hide defaults_tab\n         frm.toggle_display('lead_name', false);\n         frm.toggle_display('opportunity_name', false)\n         frm.toggle_display('prospect_name', false)\n         frm.toggle_display('internal_customer_section', false)\n         frm.toggle_display('gender', false)\n        frm.toggle_display('salutation', false)\n         frm.toggle_display('territory', false)\n          frm.toggle_display('custom_hr_name', true)\n         frm.toggle_display('custom_contact_no', true)\n         \n\n\n\n\n    } else {\n        frm.toggle_display('defaults_tab', true); // Show defaults_tab\n        frm.toggle_display('lead_name', true)\n        frm.toggle_display('opportunity_name', true)\n        frm.toggle_display('prospect_name', true)\n                 frm.toggle_display('internal_customer_section', true)\n                 frm.toggle_display('custom_hr_name', false)\n                 frm.toggle_display('custom_contact_no', false)\n\n    }\n}\n",
+  "view": "Form"
+ }
+]
