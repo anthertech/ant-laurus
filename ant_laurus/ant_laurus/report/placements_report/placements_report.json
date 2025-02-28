@@ -1,0 +1,30 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2025-02-27 13:35:00.427438",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letterhead": null,
+ "modified": "2025-02-27 13:35:00.427438",
+ "modified_by": "Administrator",
+ "module": "Ant Laurus",
+ "name": "Placements Report",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Placements",
+ "report_name": "Placements Report",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "HR Manager"
+  }
+ ],
+ "timeout": 0
+}
