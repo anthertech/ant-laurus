@@ -48,10 +48,10 @@
   "doctype": "Client Script",
   "dt": "Job Applicant",
   "enabled": 1,
-  "modified": "2025-02-26 17:42:59.996420",
+  "modified": "2025-02-28 11:30:06.793018",
   "module": "Ant Laurus",
   "name": "Custom Button for placement",
-  "script": "frappe.ui.form.on('Job Applicant', {\n    refresh: function(frm) {\n        frm.add_custom_button(__('Create Placement'), function() {\n            frappe.new_doc('Placements', {\n                student_name: frm.doc.custom_student_, // Copy student name\n                job_applicant_id: frm.doc.name, // Copy Job Applicant ID\n                placed_company: frm.doc.custom_hiring_company // Copy hiring company\n            });\n        }, __('Actions'));\n    }\n});\n",
+  "script": "frappe.ui.form.on('Job Applicant', {\n    refresh: function(frm) {\n        // Check if 'custom_recruitment' is set to 'Placement'\n        if (frm.doc.custom_recruitment === \"Placement\") {\n            frm.add_custom_button(__('Create Placement'), function() {\n                frappe.new_doc('Placements', {\n                    student_name: frm.doc.custom_student_, // Copy student name\n                    job_applicant_id: frm.doc.name, // Copy Job Applicant ID\n                    placed_company: frm.doc.custom_hiring_company // Copy hiring company\n                });\n            }, __('Actions'));\n        }\n    }\n});\n",
   "view": "Form"
  },
  {
