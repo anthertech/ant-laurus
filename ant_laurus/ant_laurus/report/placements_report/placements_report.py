@@ -10,14 +10,16 @@ def execute(filters=None):
 def get_columns():
     return [
         {"fieldname": "student_id", "label": _("""<b>Student ID</b>"""), "fieldtype": "Link", "options": "Student", "width": 50},
-        {"fieldname": "student_full_name", "label": _("""<b>Student  Name</b>"""), "fieldtype": "Data", "width": 180},
-        {"fieldname": "student_batch", "label": _("""<b>Student Batch</b>"""), "fieldtype": "Link", "options": "Student Group", "width": 150},
+        {"fieldname": "student_full_name", "label": _("""<b>Student  Name</b>"""), "fieldtype": "Data", "width": 160},
+        {"fieldname": "student_batch", "label": _("""<b>Student Batch</b>"""), "fieldtype": "Link", "options": "Student Group", "width": 110},
         {"fieldname": "placement_type", "label": _("""<b>Placement Type</b>"""), "fieldtype": "Select", "width": 150},
         {"fieldname": "placed_company", "label": _("""<b>Placed Company</b>"""), "fieldtype": "Link", "options": "Customer", "width": 150},
-        {"fieldname": "joined_date", "label": _("""<b>Joined Date</b>"""), "fieldtype": "Date", "width": 120},
+        {"fieldname": "joined_date", "label": _("""<b>Joined Date</b>"""), "fieldtype": "Date", "width": 100},
         {"fieldname": "employment_type", "label": _("""<b>Employment Type</b>"""), "fieldtype": "Data", "width": 120},
         {"fieldname": "designation", "label": _("""<b>Designation</b>"""), "fieldtype": "Data", "width": 150},
-        {"fieldname": "current_status", "label": _("""<b>Current Status</b>"""), "fieldtype": "Data", "width": 150}
+        {"fieldname": "current_status", "label": _("""<b>Current Status</b>"""), "fieldtype": "Data", "width": 90},
+		{"fieldname": "company_location", "label": _("""<b>Company Location</b>"""), "fieldtype": "Link", "options": "Address", "width": 150}
+
     ]
 
 
@@ -52,7 +54,8 @@ def get_data(filters):
             p.joined_date, 
             p.employment_type, 
             p.designation, 
-            p.current_status
+            p.current_status,
+			p.company_location
         FROM `tabPlacements` p
         LEFT JOIN `tabStudent` s ON p.student_name = s.name
         LEFT JOIN `tabStudent Group` sg ON p.student_batch = sg.name
