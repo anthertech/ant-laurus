@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:name1",
  "creation": "2025-02-23 22:04:29.709711",
@@ -180,10 +181,11 @@
    "options": "Campus Placement\nSelf-Placed"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-27 18:19:22.769488",
+ "modified": "2025-03-14 12:20:07.892055",
  "modified_by": "Administrator",
  "module": "Ant Laurus",
  "name": "Placements",
@@ -220,6 +222,11 @@
  "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
+ "states": [
+  {
+   "color": "Purple",
+   "title": "Submitted"
+  }
+ ],
  "title_field": "name1"
 }
