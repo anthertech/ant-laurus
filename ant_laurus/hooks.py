@@ -260,5 +260,11 @@ fixtures = [
         "filters": [
             ["module", "=", "Ant Laurus"]
         ]
+    },
+    {
+        "dt": "Server Script",
+        "filters": [
+            ["module", "=", "Ant Laurus"]
+        ]
     }
 ]
