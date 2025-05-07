@@ -1,0 +1,69 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-04-25 11:08:51.072270",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "students",
+  "student_name",
+  "log_type",
+  "time",
+  "device_id"
+ ],
+ "fields": [
+  {
+   "fieldname": "students",
+   "fieldtype": "Link",
+   "label": "Students",
+   "options": "Student"
+  },
+  {
+   "fetch_from": "students.student_name",
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "label": "Student Name"
+  },
+  {
+   "fieldname": "log_type",
+   "fieldtype": "Select",
+   "label": "Log Type",
+   "options": "\nIN\nOUT"
+  },
+  {
+   "fieldname": "time",
+   "fieldtype": "Datetime",
+   "label": "Time"
+  },
+  {
+   "fieldname": "device_id",
+   "fieldtype": "Data",
+   "label": "Device ID"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-04-25 11:33:14.504511",
+ "modified_by": "Administrator",
+ "module": "Ant Laurus",
+ "name": "Students Checkin",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

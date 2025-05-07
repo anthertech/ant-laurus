@@ -52,9 +52,10 @@
    "options": "Certificates of Student"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-18 11:15:05.282679",
+ "modified": "2025-04-25 16:19:25.302522",
  "modified_by": "Administrator",
  "module": "Ant Laurus",
  "name": "Certificate Issuance Log",
