@@ -147,6 +147,11 @@ override_doctype_class = {
 
 # Scheduled Tasks
 # ---------------
+scheduler_events = {
+    "all": [
+        "ant_laurus.ant_laurus.api.student_attendance.check_in_out_attendance_scheduler"
+    ]
+}
 
 # scheduler_events = {
 # 	"all": [
