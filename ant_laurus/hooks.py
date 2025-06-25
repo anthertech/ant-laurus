@@ -153,6 +153,23 @@ scheduler_events = {
     ]
 }
 
+
+# my_app/hooks.py
+
+doc_events = {
+    "Student": {
+        "before_insert": "ant_laurus.ant_laurus.api.student_details.on_student_insert"
+    }
+}
+
+# doc_events = {
+#     "Student Applicant": {
+#         "on_update": "ant_laurus.ant_laurus.api.student_details.sync_guardians_to_student"
+#     }
+# }
+
+
+
 # scheduler_events = {
 # 	"all": [
 # 		"ant_laurus.tasks.all"
