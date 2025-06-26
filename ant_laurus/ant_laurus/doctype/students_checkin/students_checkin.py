@@ -39,7 +39,7 @@ def add_log_based_on_student_field(
 			)
 		)
 	doc = frappe.new_doc("Students Checkin")
-	doc.student = student.name
+	doc.students = student.name
 	doc.student_name = student.student_name
 	doc.time = timestamp
 	doc.device_id = device_id
