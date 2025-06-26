@@ -55,7 +55,7 @@ def check_in_out_attendance_scheduler():
                 duration_seconds = (last_out - first_in).total_seconds()
                 attendance_date = first_in.strftime('%Y-%m-%d')
 
-                if duration_seconds >= 7200:
+                if duration_seconds >= 1800:
                     create_attendance(student_id, group_name, attendance_date, 'Present')
                 else:
                     create_attendance(student_id, group_name, attendance_date, 'Absent')
