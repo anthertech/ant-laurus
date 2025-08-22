@@ -132,6 +132,10 @@ app_license = "mit"
 override_doctype_class = {
 	"Assessment Plan": "ant_laurus.ant_laurus.api.assessment_plan.AssessmentPlan"
 }
+# hooks.py
+# override_whitelisted_methods = {
+#     'education.api.student_leave.apply_student_leave': 'education.api.student_leave.apply_student_leave'
+# }
 
 # Document Events
 # ---------------
