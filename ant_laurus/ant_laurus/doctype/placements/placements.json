@@ -94,6 +94,7 @@
    "options": "Address"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "joined_date",
    "fieldtype": "Date",
    "label": "Joined Date"
@@ -117,6 +118,7 @@
    "options": "Job Applicant"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "salary_package",
    "fieldtype": "Data",
    "label": "Salary Package"
@@ -185,8 +187,8 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-07-22 15:20:55.409167",
- "modified_by": "hopeson@anther.tech",
+ "modified": "2025-08-25 12:06:25.360928",
+ "modified_by": "Administrator",
  "module": "Ant Laurus",
  "name": "Placements",
  "naming_rule": "Expression",
