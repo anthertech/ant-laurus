@@ -1,6 +1,6 @@
 app_name = "ant_laurus"
 app_title = "Ant Laurus"
-app_publisher = "Hopeson"
+app_publisher = "Anther Tech Pvt Ltd"
 app_description = "Custom app for tracking laurus customization"
 app_email = "hopeson@anther.tech"
 app_license = "mit"
@@ -132,6 +132,10 @@ app_license = "mit"
 override_doctype_class = {
 	"Assessment Plan": "ant_laurus.ant_laurus.api.assessment_plan.AssessmentPlan"
 }
+# hooks.py
+# override_whitelisted_methods = {
+#     'education.api.student_leave.apply_student_leave': 'education.api.student_leave.apply_student_leave'
+# }
 
 # Document Events
 # ---------------
@@ -147,6 +151,32 @@ override_doctype_class = {
 
 # Scheduled Tasks
 # ---------------
+
+
+scheduler_events = {
+    "cron": {
+        "0 22 * * *": [
+            "ant_laurus.ant_laurus.api.student_attendance.check_in_out_attendance_scheduler"
+        ]
+    }
+}
+
+
+# my_app/hooks.py
+
+doc_events = {
+    "Student": {
+        "before_insert": "ant_laurus.ant_laurus.api.student_details.on_student_insert"
+    }
+}
+
+# doc_events = {
+#     "Student Applicant": {
+#         "on_update": "ant_laurus.ant_laurus.api.student_details.sync_guardians_to_student"
+#     }
+# }
+
+
 
 # scheduler_events = {
 # 	"all": [
@@ -242,3 +272,29 @@ override_doctype_class = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+fixtures = [
+    {
+        "dt": "Web Page",   
+        "filters": [
+            ["module", "=", "Ant Laurus"]
+        ]
+    },
+    {
+        "dt": "Custom Field",
+        "filters": [
+            ["module", "=", "Ant Laurus"]
+        ]
+    },
+    {
+        "dt": "Client Script",
+        "filters": [
+            ["module", "=", "Ant Laurus"]
+        ]
+    },
+    {
+        "dt": "Server Script",
+        "filters": [
+            ["module", "=", "Ant Laurus"]
+        ]
+    }
+]

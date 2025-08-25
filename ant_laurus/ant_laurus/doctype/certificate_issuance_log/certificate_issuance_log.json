@@ -1,0 +1,80 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-02-17 12:46:45.062297",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "student",
+  "joining_date",
+  "column_break_wbxj",
+  "academic_year",
+  "student_batch",
+  "certificates_section",
+  "issued_certificates"
+ ],
+ "fields": [
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "label": "Student Name",
+   "options": "Student"
+  },
+  {
+   "fetch_from": "student.joining_date",
+   "fieldname": "joining_date",
+   "fieldtype": "Data",
+   "label": "Joining Date"
+  },
+  {
+   "fieldname": "column_break_wbxj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Data",
+   "label": "Academic Year"
+  },
+  {
+   "fieldname": "student_batch",
+   "fieldtype": "Data",
+   "label": "Student Batch"
+  },
+  {
+   "fieldname": "certificates_section",
+   "fieldtype": "Section Break",
+   "label": "Certificates"
+  },
+  {
+   "fieldname": "issued_certificates",
+   "fieldtype": "Table",
+   "label": "Issued Certificates",
+   "options": "Certificates of Student"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-04-25 16:19:25.302522",
+ "modified_by": "Administrator",
+ "module": "Ant Laurus",
+ "name": "Certificate Issuance Log",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

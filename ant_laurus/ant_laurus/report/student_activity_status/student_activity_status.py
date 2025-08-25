@@ -64,15 +64,16 @@ def get_student_assessment_data(filters, columns):
 
     # Fetch assessment results grouped by date and criterion
     results = frappe.db.sql("""
-        SELECT ar.creation AS date, ar_detail.assessment_criteria, ar_detail.grade
-        FROM `tabAssessment Result Detail` ar_detail
-        INNER JOIN `tabAssessment Result` ar
-        ON ar.name = ar_detail.parent
-        WHERE ar.student = %s
-        AND (%s IS NULL OR ar.course = %s)
-        AND ar.docstatus = 1
-        ORDER BY ar.creation ASC
-    """, (student, course, course), as_dict=True)
+    SELECT ap.schedule_date AS date, ar_detail.assessment_criteria, ar_detail.grade
+    FROM `tabAssessment Result Detail` ar_detail
+    INNER JOIN `tabAssessment Result` ar ON ar.name = ar_detail.parent
+    INNER JOIN `tabAssessment Plan` ap ON ap.name = ar.assessment_plan
+    WHERE ar.student = %s
+    AND (%s IS NULL OR ar.course = %s)
+    AND ar.docstatus = 1
+    ORDER BY ap.schedule_date ASC
+""", (student, course, course), as_dict=True)
+
 
     # Prepare data grouped by date and criteria
     grouped_data = {}

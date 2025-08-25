@@ -1,0 +1,235 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "format:{name1}-{DD}-{MM}-{YY}",
+ "creation": "2025-02-23 22:04:29.709711",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_kvcd",
+  "student_name",
+  "name1",
+  "academic_year",
+  "student_batch",
+  "placement_type",
+  "column_break_zkdp",
+  "student_contact_no",
+  "student_email",
+  "student_location",
+  "section_break_knap",
+  "job_applicant_id",
+  "placed_company",
+  "company_location",
+  "joined_date",
+  "payment_history",
+  "column_break_ayoc",
+  "job_offer_recieved",
+  "designation",
+  "employment_type",
+  "current_status",
+  "salary_package",
+  "section_break_qxsi",
+  "remarks",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_kvcd",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "student_name",
+   "fieldtype": "Link",
+   "label": "Student Name",
+   "options": "Student",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year"
+  },
+  {
+   "fieldname": "student_batch",
+   "fieldtype": "Link",
+   "label": "Student Batch",
+   "options": "Student Group"
+  },
+  {
+   "fieldname": "column_break_zkdp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "student_contact_no",
+   "fieldtype": "Data",
+   "label": "Student Contact No"
+  },
+  {
+   "fetch_from": "student_name.student_email_id",
+   "fieldname": "student_email",
+   "fieldtype": "Data",
+   "label": "Student Email"
+  },
+  {
+   "fieldname": "student_location",
+   "fieldtype": "Data",
+   "label": "Student location"
+  },
+  {
+   "fieldname": "section_break_knap",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "placed_company",
+   "fieldtype": "Link",
+   "label": "Placed Company",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "company_location",
+   "fieldtype": "Link",
+   "label": "Company Location",
+   "options": "Address"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "joined_date",
+   "fieldtype": "Date",
+   "label": "Joined Date"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "current_status",
+   "fieldtype": "Select",
+   "label": "Current Status",
+   "options": "\nActive\nQuited\nInactive",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_ayoc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "job_applicant_id",
+   "fieldtype": "Link",
+   "label": "Job Applicant ID",
+   "options": "Job Applicant"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "salary_package",
+   "fieldtype": "Data",
+   "label": "Salary Package"
+  },
+  {
+   "fieldname": "payment_history",
+   "fieldtype": "Data",
+   "label": "Payment History"
+  },
+  {
+   "fieldname": "section_break_qxsi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fetch_from": "student_name.student_name",
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "name"
+  },
+  {
+   "fetch_from": "job_applicant_id.designation",
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Placements",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "employment_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employment Type",
+   "options": "Employment Type",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "job_offer_recieved",
+   "fieldtype": "Check",
+   "label": "Job Offer Recieved"
+  },
+  {
+   "fieldname": "placement_type",
+   "fieldtype": "Select",
+   "label": "Placement Type ",
+   "options": "Campus Placement\nSelf-Placed"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-08-25 12:06:25.360928",
+ "modified_by": "Administrator",
+ "module": "Ant Laurus",
+ "name": "Placements",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [
+  {
+   "color": "Purple",
+   "title": "Submitted"
+  }
+ ],
+ "title_field": "name1"
+}

@@ -5,7 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestDailySyllabusUpdate(FrappeTestCase):
+class TestCertificateIssuanceLog(FrappeTestCase):
 	pass
-
-
