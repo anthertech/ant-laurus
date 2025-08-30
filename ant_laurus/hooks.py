@@ -1,6 +1,6 @@
 app_name = "ant_laurus"
 app_title = "Ant Laurus"
-app_publisher = "Hopeson"
+app_publisher = "Anther Tech Pvt Ltd"
 app_description = "Custom app for tracking laurus customization"
 app_email = "hopeson@anther.tech"
 app_license = "mit"
