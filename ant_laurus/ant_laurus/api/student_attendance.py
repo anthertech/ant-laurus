@@ -11,14 +11,14 @@ def check_in_out_attendance_scheduler():
     for group in active_student_groups:
         group_name = group.name
 
-        #  Check if this group has any class scheduled today
+        # 🚨 Check if this group has any class scheduled today
         has_class_today = frappe.db.exists('Course Schedule', {
             'student_group': group_name,
             'schedule_date': today
         })
 
         if not has_class_today:
-            continue  # Skip groups with no scheduled class
+            continue  # ⛔ Skip groups with no scheduled class
 
         # 2. Get students in each group
         students = frappe.get_all('Student Group Student', filters={'parent': group_name}, fields=['student'])
@@ -54,11 +54,10 @@ def check_in_out_attendance_scheduler():
 
                 duration_seconds = (last_out - first_in).total_seconds()
                 attendance_date = first_in.strftime('%Y-%m-%d')
-                print(duration_seconds,"duration_seconds")
-                if duration_seconds >= 120:
+
+                if duration_seconds >= 1800:
                     create_attendance(student_id, group_name, attendance_date, 'Present')
                 else:
-                    print("absent lists")
                     create_attendance(student_id, group_name, attendance_date, 'Absent')
             else:
                 create_attendance(student_id, group_name, today, 'Absent')
