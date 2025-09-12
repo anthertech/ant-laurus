@@ -160,8 +160,7 @@ scheduler_events = {
         ]
     }
 }
-
-
+# 
 # my_app/hooks.py
 
 doc_events = {
