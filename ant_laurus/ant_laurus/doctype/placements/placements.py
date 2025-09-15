@@ -6,7 +6,8 @@ from frappe.model.document import Document
 
 
 class Placements(Document):
-	pass
+    pass
+
 
 @frappe.whitelist()
 def get_student_group(student_name):
@@ -60,14 +61,3 @@ def get_filtered_addresses(doctype, txt, searchfield, start, page_len, filters):
             AND dl.link_name = %s
         )
     """, (placed_company,))
-
-doc = frappe.get_doc({
-    "doctype": "Student",
-    "student_name": "John Doe",
-    # other fields
-})
-
-# disable link validation and unique checks manually
-doc.flags.ignore_validate = True
-doc.flags.ignore_mandatory = True
-doc.insert(ignore_permissions=True)
