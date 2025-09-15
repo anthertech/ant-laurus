@@ -31,13 +31,19 @@ def add_log_based_on_student_field(
 		["name", "student_name", employee_fieldname],
 		as_dict=True
 	)
-
+	# if not student:
+	# 	frappe.throw(
+	# 		_("No Student found for the given field value. '{}': {}").format(
+	# 			employee_fieldname, employee_field_value
+	# 		)
+	# 	)
 	if not student:
-		frappe.throw(
-			_("No Student found for the given field value. '{}': {}").format(
+		return {
+			"status": "error",
+			"message": _("No Student found for the given field value. '{}': {}").format(
 				employee_fieldname, employee_field_value
 			)
-		)
+		}
 	doc = frappe.new_doc("Students Checkin")
 	doc.students = student.name
 	doc.student_name = student.student_name
