@@ -38,6 +38,7 @@ def add_log_based_on_student_field(
 	# 		)
 	# 	)
 	if not student:
+		frappe.local.response.http_status_code = 404   
 		return {
 			"status": "error",
 			"message": _("No Student found for the given field value. '{}': {}").format(
