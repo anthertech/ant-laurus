@@ -1,1 +1,1 @@
-pypdf
+pypdf==3.0.1
