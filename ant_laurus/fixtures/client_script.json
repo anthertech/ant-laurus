@@ -75,5 +75,16 @@
   "name": "Assessment criteria",
   "script": "frappe.ui.form.on('Assessment Plan', {\n    course: function (frm) {\n        if (frm.doc.course === \"20*9 Activity\") {\n            frappe.call({\n                method: \"frappe.client.get_list\",\n                args: {\n                    doctype: \"Assessment Criteria\",\n                    filters: {\n                        assessment_criteria_group: \"20*9 Activity\"\n                    },\n                    fields: [\"name\"]\n                },\n                callback: function (r) {\n                    if (r.message) {\n                        let criteria = r.message;\n                        let total_criteria = criteria.length;\n\n                        frm.set_value(\"maximum_assessment_score\", total_criteria);\n                        frm.clear_table(\"assessment_criteria\");\n\n                        criteria.forEach(function (item) {\n                            let row = frm.add_child(\"assessment_criteria\");\n                            row.assessment_criteria = item.name;\n                            row.maximum_score = 1.0;\n                        });\n\n                        frm.refresh_field(\"assessment_criteria\");\n                    }\n                }\n            });\n        }\n    }\n});\n",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Student",
+  "enabled": 1,
+  "modified": "2025-09-23 17:36:07.164895",
+  "module": "Ant Laurus",
+  "name": "Download Button in Student Doc",
+  "script": "frappe.ui.form.on(\"Student\", {\n    refresh: function(frm) {\n        if (!frm.is_new()) {\n            frm.add_custom_button(\"Download All Files\", function() {\n                frappe.call({\n                    method: \"ant_laurus.ant_laurus.api.student_custom.download_all_files\",\n                    args: {\n                        docname: frm.doc.name,\n                        doctype: frm.doc.doctype\n                    },\n                    callback: function(r) {\n                        if (r.message && r.message.pdf_base64) {\n                            var base64PDF = r.message.pdf_base64;\n                            var binary = atob(base64PDF);\n                            var len = binary.length;\n                            var buffer = new ArrayBuffer(len);\n                            var view = new Uint8Array(buffer);\n                            for (var i = 0; i < len; i++) {\n                                view[i] = binary.charCodeAt(i);\n                            }\n                            var blob = new Blob([view], {type: 'application/pdf'});\n                            var url = URL.createObjectURL(blob);\n                            window.open(url, '_blank');\n                        }\n                    }\n                });\n            });\n        }\n    }\n});\n",
+  "view": "Form"
  }
 ]

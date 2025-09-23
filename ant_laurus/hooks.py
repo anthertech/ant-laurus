@@ -163,11 +163,22 @@ scheduler_events = {
 # 
 # my_app/hooks.py
 
+# doc_events = {
+#     "Student": {
+#         "before_insert": "ant_laurus.ant_laurus.api.student_details.on_student_insert"
+#     }
+# }
+
 doc_events = {
     "Student": {
         "before_insert": "ant_laurus.ant_laurus.api.student_details.on_student_insert"
+    },
+    "Student Applicant": {
+        "on_update": "ant_laurus.ant_laurus.api.student_details.on_student_applicant_update"
     }
 }
+
+
 
 # doc_events = {
 #     "Student Applicant": {
@@ -207,6 +218,11 @@ doc_events = {
 # 	"frappe.desk.doctype.event.event.get_events": "ant_laurus.event.get_events"
 # }
 #
+
+override_whitelisted_methods = {
+    "ant_laurus.ant_laurus.api.student_custom.download_all_files": "ant_laurus.ant_laurus.api.student_custom.download_all_files"
+}
+
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
 # along with any modifications made in other Frappe apps
