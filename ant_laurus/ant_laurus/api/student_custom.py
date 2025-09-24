@@ -6,87 +6,90 @@ from PIL import Image
 import os
 import tempfile
 
-
 @frappe.whitelist()
 def download_all_files(docname, doctype):
-    # Get the Student document to read student_applicant value
     student_doc = frappe.get_doc(doctype, docname)
     student_applicant_name = getattr(student_doc, "student_applicant", None)
 
-    # Get all files attached directly to Student
-    student_files = frappe.get_all("File", filters={
-        "attached_to_doctype": doctype,
-        "attached_to_name": docname
-    }, fields=["file_url", "file_name", "attached_to_field"])
+    # Helper to get files
+    def get_files(dt, dn, field_filters=None):
+        filters = {"attached_to_doctype": dt, "attached_to_name": dn}
+        if field_filters:
+            filters.update(field_filters)
+        return frappe.get_all("File", filters=filters, fields=["file_url", "file_name", "attached_to_field"], order_by="creation asc")
 
-    # Get files attached to the student_applicant, if present
-    applicant_files = []
-    if student_applicant_name:
-        applicant_files = frappe.get_all("File", filters={
-            "attached_to_doctype": "Student Applicant",
-            "attached_to_name": student_applicant_name
-        }, fields=["file_url", "file_name", "attached_to_field"])
+    # 1. Get files from student and student applicant
+    student_files = get_files(doctype, docname)
+    applicant_files = get_files("Student Applicant", student_applicant_name) if student_applicant_name else []
 
-    # Get child table records linked to Student
-    child_records = frappe.get_all("Educational Qualifications", filters={
-        "parent": docname
-    }, fields=["name"], order_by="idx asc")
-
+    # 2. Get child table files
     child_files = []
+    child_records = frappe.get_all("Educational Qualifications", filters={"parent": docname}, fields=["name"], order_by="idx asc")
     for child in child_records:
-        files = frappe.get_all("File", filters={
-            "attached_to_doctype": "Educational Qualifications",
-            "attached_to_name": child.name,
-            "attached_to_field": "certificates"
-        }, fields=["file_url", "file_name", "attached_to_field"], order_by="creation asc")
-        child_files.extend(files)
+        child_files.extend(get_files("Educational Qualifications", child.name, {"attached_to_field": "certificates"}))
 
-    # Combine all files: student + applicant + child table
-    all_files = student_files + applicant_files + child_files
+    # 3. Combine all files
+    all_files = applicant_files + student_files + child_files  # Applicant first for priority
 
     if not all_files:
         frappe.throw("No files attached to this record.")
 
-    # Priority sorting function as before
-    def file_priority(f):
-        field = f.get("attached_to_field", "")
-        # Hardcoded field priority
-        if field == "image":
-            return 0
-        elif field == "custom_adhaar_front_":
-            return 1
-        elif field == "custom_adhaar_back":
-            return 2
-        elif field == "certificates":
-            return 3
-        return 4  # All other fields last
+    # 4. Deduplicate and prioritize
+    seen_fields = set()
+    final_files = []
 
+    field_aliases = {
+        "image": ["image"],
+        "custom_adhaar_front_": ["custom_adhaar_front_", "custom_addhaar_copy"],
+        "custom_adhaar_back": ["custom_adhaar_back", "custom_addhaar_copy_back_side"],
+        "certificates": ["certificates"]
+    }
 
-    all_files_sorted = sorted(all_files, key=file_priority)
+    def get_field_type(f):
+        for key, aliases in field_aliases.items():
+            if f.get("attached_to_field") in aliases:
+                return key
+        return "other"
 
-    # Merge logic unchanged
+    # Priority: only one for image and Aadhaar
+    for priority_field in ["image", "custom_adhaar_front_", "custom_adhaar_back"]:
+        for f in all_files:
+            f_type = get_field_type(f)
+            if f_type == priority_field and f_type not in seen_fields:
+                final_files.append(f)
+                seen_fields.add(f_type)
+                break  # Only one file per priority type
+
+    # Add all certificates from student applicant
+    for f in applicant_files:
+        if get_field_type(f) == "certificates":
+            final_files.append(f)
+
+    # Add remaining files not yet added (excluding duplicates of priority and certificates)
+    for f in all_files:
+        f_type = get_field_type(f)
+        if f_type not in seen_fields and f_type != "certificates":
+            final_files.append(f)
+            seen_fields.add(f_type)
+
+    # 5. Merge PDFs and images
     merger = PdfMerger()
     temp_pdfs = []
 
-    for f in all_files_sorted:
+    for f in final_files:
         file_url = f["file_url"]
-
         if file_url.startswith("/private/"):
-            relative_path = file_url[len("/private/"):]
-            file_path = frappe.get_site_path("private", relative_path)
+            file_path = frappe.get_site_path("private", file_url[len("/private/"):])
         elif file_url.startswith("/files/"):
-            relative_path = file_url[len("/files/"):]
-            file_path = frappe.get_site_path("public", "files", relative_path)
+            file_path = frappe.get_site_path("public", "files", file_url[len("/files/"):])
         else:
-            relative_path = file_url.lstrip("/")
-            file_path = frappe.get_site_path("public", relative_path)
+            file_path = frappe.get_site_path("public", file_url.lstrip("/"))
 
         if not os.path.exists(file_path):
-            frappe.log_error(f"File not found at path: {file_path}", "download_all_files missing_file")
+            frappe.log_error(f"File not found: {file_path}", "download_all_files")
             continue
 
         ext = os.path.splitext(file_path)[1].lower()
-
         if ext == ".pdf":
             merger.append(file_path)
         elif ext in [".png", ".jpg", ".jpeg"]:
@@ -112,5 +115,4 @@ def download_all_files(docname, doctype):
             frappe.log_error(f"Error deleting temp pdf {temp_pdf}: {str(e)}", "download_all_files cleanup")
 
     encoded_pdf = base64.b64encode(output.read()).decode('utf-8')
-
     return {"pdf_base64": encoded_pdf}
