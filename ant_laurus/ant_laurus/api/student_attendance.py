@@ -26,6 +26,11 @@ def check_in_out_attendance_scheduler():
         for student in students:
             student_id = student.student
 
+             # 🚨 Skip disabled students
+            is_enabled = frappe.get_value('Student', student_id, 'enabled')
+            if not is_enabled:
+                continue
+
             # 3. Skip if student already has attendance
             existing_attendance = frappe.get_value('Student Attendance', {
                 'student': student_id,
